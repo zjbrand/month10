@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>アナログ時計</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0f172a, #334155);
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      text-align: center;
+      color: white;
+      padding: 25px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      letter-spacing: 3px;
+    }
+
+    .date {
+      color: #cbd5e1;
+      margin-bottom: 30px;
+    }
+
+    /* 時計本体 */
+    .c-clock {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      max-width: 85vw;
+      max-height: 85vw;
+      border: 10px solid #e2e8f0;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff, #e2e8f0);
+      box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.4),
+        inset 0 0 20px rgba(0, 0, 0, 0.08);
+      margin: 0 auto;
+    }
+
+    /* 数字 */
+    .number {
+      position: absolute;
+      font-size: 25px;
+      font-weight: bold;
+      color: #334155;
+    }
+
+    .c-clock_12 {
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .c-clock_3 {
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .c-clock_6 {
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .c-clock_9 {
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* 針の共通設定 */
+    .hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom center;
+      border-radius: 10px;
+      z-index: 2;
+    }
+
+    /* 時針 */
+    .c-clock_hour {
+      width: 10px;
+      height: 25%;
+      margin-left: -5px;
+      background: #1e293b;
+    }
+
+    /* 分針 */
+    .c-clock_min {
+      width: 6px;
+      height: 35%;
+      margin-left: -3px;
+      background: #475569;
+    }
+
+    /* 秒針 */
+    .c-clock_sec {
+      width: 3px;
+      height: 43%;
+      margin-left: -1.5px;
+      background: #ef4444;
+      z-index: 3;
+    }
+
+    /* 時計の中心 */
+    .clock-center {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #ef4444;
+      border: 4px solid white;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      box-shadow: 0 0 4px #888;
+    }
+
+    /* 目盛り */
+    .tick {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 100%;
+      transform-origin: center;
+      pointer-events: none;
+    }
+
+    .tick::before {
+      content: "";
+      display: block;
+      width: 2px;
+      height: 9px;
+      background: #94a3b8;
+    }
+
+    .tick.major::before {
+      width: 3px;
+      height: 15px;
+      background: #334155;
+    }
+
+    /* デジタル表示 */
+    .digital-time {
+      margin-top: 30px;
+      font-size: 40px;
+      font-weight: bold;
+      letter-spacing: 5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      color: #94a3b8;
+      letter-spacing: 2px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>ANALOG CLOCK</h1>
+    <div class="date" id="dateDisplay"></div>
+
+    <div class="c-clock" id="clock">
+      <span class="c-clock_hour hand"></span>
+      <span class="c-clock_min hand"></span>
+      <span class="c-clock_sec hand"></span>
+
+      <span class="c-clock_12 number">12</span>
+      <span class="c-clock_3 number">3</span>
+      <span class="c-clock_6 number">6</span>
+      <span class="c-clock_9 number">9</span>
+
+      <div class="clock-center"></div>
+    </div>
+
+    <div class="digital-time" id="timeDisplay"></div>
+    <div class="subtitle">JAPAN STANDARD TIME</div>
+  </div>
+
+  <script>
+    const hourElement = document.querySelector(".c-clock_hour");
+    const minElement = document.querySelector(".c-clock_min");
+    const secElement = document.querySelector(".c-clock_sec");
+
+    const clock = document.querySelector("#clock");
+    const timeDisplay = document.querySelector("#timeDisplay");
+    const dateDisplay = document.querySelector("#dateDisplay");
+
+    // 60個の目盛りを作成
+    for (let i = 0; i < 60; i++) {
+      const tick = document.createElement("div");
+
+      tick.classList.add("tick");
+
+      if (i % 5 === 0) {
+        tick.classList.add("major");
+      }
+
+      tick.style.transform = `translateX(-50%) rotate(${i * 6}deg)`;
+      clock.appendChild(tick);
+    }
+
+    // 現在時刻を表示する
+    function updateClock() {
+      const now = new Date();
+
+      const h = now.getHours();
+      const m = now.getMinutes();
+      const s = now.getSeconds();
+      const ms = now.getMilliseconds();
+
+      const degreeH = (h % 12) * 30 + m * 0.5 + s / 120;
+      const degreeM = m * 6 + s * 0.1;
+      const degreeS = (s + ms / 1000) * 6;
+
+      hourElement.style.transform = `rotate(${degreeH}deg)`;
+      minElement.style.transform = `rotate(${degreeM}deg)`;
+      secElement.style.transform = `rotate(${degreeS}deg)`;
+
+      // デジタル時計
+      const time = now.toLocaleTimeString("ja-JP", {
+        timeZone: "Asia/Tokyo",
+        hour12: false
+      });
+
+      timeDisplay.textContent = time;
+
+      // 日付
+      dateDisplay.textContent = now.toLocaleDateString("ja-JP", {
+        timeZone: "Asia/Tokyo",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long"
+      });
+    }
+
+    // ページを開いたらすぐ表示
+    updateClock();
+
+    // 定期的に更新
+    setInterval(updateClock, 50);
+  </script>
+</body>
+
+</html>

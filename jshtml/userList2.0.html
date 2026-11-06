@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ユーザー情報リスト</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    table {
+      width: min(100%, 900px);
+      margin: auto;
+      border: 3px solid;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th {
+      background-color: #ddd;
+    }
+
+    th,
+    td {
+      height: 40px;
+      border: 1px solid;
+      padding: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    tbody tr:hover {
+      background-color: #eee;
+    }
+
+    form,
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 16px auto;
+      max-width: 900px;
+    }
+
+    input,
+    select,
+    button {
+      padding: 8px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .actions {
+      white-space: nowrap;
+    }
+
+    #message {
+      min-height: 1.5em;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px 4px;
+      }
+
+      th,
+      td {
+        font-size: 12px;
+        padding: 2px;
+      }
+
+      input,
+      select,
+      button {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h2>ユーザー情報リスト</h2>
+  <form id="user-form">
+    <input id="name" name="name" type="text" placeholder="名前" aria-label="名前" required>
+    <input id="age" name="age" type="number" placeholder="年齢" aria-label="年齢" min="0" max="150" required>
+    <select id="gender" name="gender" aria-label="性別" required>
+      <option value="">性別を選択</option>
+      <option value="男性">男性</option>
+      <option value="女性">女性</option>
+      <option value="その他">その他</option>
+    </select>
+    <input id="email" name="email" type="email" placeholder="メール" aria-label="メール" required>
+    <input id="address" name="address" type="text" placeholder="住所" aria-label="住所" required>
+    <button id="save-button" type="submit">追加</button>
+    <button id="cancel-button" type="button" hidden>編集をキャンセル</button>
+  </form>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="名前・メール・住所で検索" aria-label="ユーザー検索">
+  </div>
+  <p id="message" role="status" aria-live="polite"></p>
+  <table>
+    <thead>
+      <tr>
+        <th>項番</th>
+        <th>名前</th>
+        <th>年齢</th>
+        <th>性別</th>
+        <th>メール</th>
+        <th>住所</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody id="user-list"></tbody>
+  </table>
+
+  <script>
+    let users = [
+      {
+        id: 1,
+        name: "田中一郎",
+        gender: "男性",
+        age: 25,
+        email: "tanaka@gmail.com",
+        address: "千葉県"
+      },
+      {
+        id: 2,
+        name: "鈴木花子",
+        gender: "女性",
+        age: 35,
+        email: "suzuki@gmail.com",
+        address: "群馬県"
+      },
+      {
+        id: 3,
+        name: "横山大郎",
+        gender: "男性",
+        age: 77,
+        email: "yokoyama@gmail.com",
+        address: "埼玉県"
+      },
+      {
+        id: 4,
+        name: "松本三郎",
+        gender: "男性",
+        age: 62,
+        email: "matumoto@gmail.com",
+        address: "神奈川県"
+      },
+      {
+        id: 5,
+        name: "山田結衣",
+        gender: "女性",
+        age: 42,
+        email: "yamada@gmail.com",
+        address: "静岡県"
+      },
+      {
+        id: 6,
+        name: "山本二郎",
+        gender: "男性",
+        age: 29,
+        email: "yamada@gmail.com",
+        address: "名古屋市"
+      }
+    ]
+
+    const userList = document.querySelector("#user-list")
+    const userForm = document.querySelector("#user-form")
+    const searchInput = document.querySelector("#search")
+    const message = document.querySelector("#message")
+    const saveButton = document.querySelector("#save-button")
+    const cancelButton = document.querySelector("#cancel-button")
+    let editingId = null
+    let nextId = Math.max(...users.map(user => user.id)) + 1
+
+    function addCell(row, value) {
+      const cell = document.createElement("td")
+      cell.textContent = value
+      row.appendChild(cell)
+    }
+
+    function renderUsers() {
+      const query = searchInput.value.trim().toLocaleLowerCase()
+      const filteredUsers = users.filter(user =>
+        [user.name, user.email, user.address]
+          .some(value => value.toLocaleLowerCase().includes(query))
+      )
+      userList.replaceChildren()
+
+      if (filteredUsers.length === 0) {
+        const row = document.createElement("tr")
+        const cell = document.createElement("td")
+        cell.colSpan = 7
+        cell.textContent = "該当するユーザーはいません"
+        row.appendChild(cell)
+        userList.appendChild(row)
+        return
+      }
+
+      filteredUsers.forEach((user, index) => {
+        const row = document.createElement("tr")
+        addCell(row, String(index + 1))
+        addCell(row, user.name)
+        addCell(row, String(user.age))
+        addCell(row, user.gender)
+        addCell(row, user.email)
+        addCell(row, user.address)
+
+        const actions = document.createElement("td")
+        actions.className = "actions"
+        const editButton = document.createElement("button")
+        editButton.type = "button"
+        editButton.textContent = "編集"
+        editButton.addEventListener("click", () => startEditing(user))
+        const deleteButton = document.createElement("button")
+        deleteButton.type = "button"
+        deleteButton.textContent = "削除"
+        deleteButton.addEventListener("click", () => deleteUser(user.id))
+        actions.append(editButton, deleteButton)
+        row.appendChild(actions)
+        userList.appendChild(row)
+      })
+    }
+
+    function startEditing(user) {
+      editingId = user.id
+      userForm.elements.name.value = user.name
+      userForm.elements.age.value = user.age
+      userForm.elements.gender.value = user.gender
+      userForm.elements.email.value = user.email
+      userForm.elements.address.value = user.address
+      saveButton.textContent = "更新"
+      cancelButton.hidden = false
+      message.textContent = `${user.name}さんの情報を編集中です`
+      userForm.elements.name.focus()
+    }
+
+    function resetForm() {
+      userForm.reset()
+      editingId = null
+      saveButton.textContent = "追加"
+      cancelButton.hidden = true
+    }
+
+    function deleteUser(id) {
+      const user = users.find(item => item.id === id)
+      if (!user || !window.confirm(`${user.name}さんを削除しますか？`)) return
+      users = users.filter(item => item.id !== id)
+      if (editingId === id) resetForm()
+      message.textContent = `${user.name}さんを削除しました`
+      renderUsers()
+    }
+
+    userForm.addEventListener("submit", event => {
+      event.preventDefault()
+      const formData = new FormData(userForm)
+      const userData = {
+        name: formData.get("name").trim(),
+        age: Number(formData.get("age")),
+        gender: formData.get("gender"),
+        email: formData.get("email").trim(),
+        address: formData.get("address").trim()
+      }
+
+      if (editingId === null) {
+        users.push({ id: nextId++, ...userData })
+        message.textContent = `${userData.name}さんを追加しました`
+      } else {
+        users = users.map(user =>
+          user.id === editingId ? { ...user, ...userData } : user
+        )
+        message.textContent = `${userData.name}さんの情報を更新しました`
+      }
+
+      resetForm()
+      renderUsers()
+    })
+
+    cancelButton.addEventListener("click", () => {
+      resetForm()
+      message.textContent = "編集をキャンセルしました"
+    })
+    searchInput.addEventListener("input", renderUsers)
+    renderUsers()
+  </script>
+</body>
+
+</html>

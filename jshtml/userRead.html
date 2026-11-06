@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <textarea style="width: 300px;height: 300px;" id="contract">
+    ユーザー登録規約
+京东ユーザーとしてご登録いただき、誠にありがとうございます。登録手続きにおきましては、所定の手続きを進めていただくとともに、以下の各規約に同意の旨をオンラインにてクリックしていただくことにより、本契約を締結するものとします。同意される前に、各条項をよくお読みいただき、内容を十分にご理解いただきますようお願いいたします（特に太字または下線が引かれた条項につきましては、お客様に義務を負っていただく場合、またはお客様の権利が制限される場合がございますので、必ずご確認ください）。
+
+</textarea>
+  <br>
+  <button id="btn" disabled>同意書を読む(10)</button><br>
+  <input type="checkbox" id="agreeCheck">利用規約に同意する</input>
+  <hr>
+
+  <span></span>
+</body>
+<script>
+  const contract = document.querySelector("#contract")
+  const btn = document.querySelector("#btn")
+  const agreeCheck = document.querySelector("#agreeCheck")
+  const span = document.querySelector("span")
+
+  let isScrolled = false
+
+  function checkAgreement() {
+    btn.disabled = !(agreeCheck.checked && isScrolled)
+  }
+
+  function checkScroll() {
+    if (contract.scrollTop + contract.clientHeight >= contract.scrollHeight - 1) {
+      isScrolled = true
+    }
+    checkAgreement()
+  }
+
+  contract.addEventListener("scroll", checkScroll)
+
+  checkScroll()
+
+  agreeCheck.addEventListener("change", function () {
+    checkAgreement()
+  })
+
+  // let readScond = 10
+
+  // let clock = setInterval(function () {
+  //   readScond--
+  //   btn.innerHTML = `同意書を読む(${readScond})`
+
+  //   if (readScond == 0) {
+  //     clearInterval(clock)
+  //     //非活性=>活性
+  //     btn.disabled = false
+  //     btn.innerHTML = "同意"
+
+  //   }
+  // }, 1000)
+
+  btn.addEventListener("click", () => {
+    span.innerHTML = "<p style='color:red;'>規約について、同意しました。</P>"
+  })
+
+
+</script>
+
+</html>

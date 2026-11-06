@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h3>自動販売機</h3>
+    <button @click="buy(130)">コーラ１３０円</button>
+    <button @click="buy(230)">コーヒー２３０円</button>
+    <button @click="buy(440)">牛乳４４０円</button>
+    <hr>
+    お金を投入：<input type="text" v-model.number="remainMoney">
+    <p>
+      残高：{{remainMoney}}
+    </p>
+    <span style="color: red;">{{ message }}</span>
+
+  </div>
+  <script>
+    const { createApp } = Vue
+    const app = createApp({
+      data() {
+        return {
+          remainMoney: 0,
+          message: ""
+        }
+      },
+      methods: {
+        buy(price) {
+          let enough = this.remainMoney - price
+          if (enough < 0) {
+            //alert("残高が足りない")
+            this.message = "残高が足りない"
+          } else {
+            this.remainMoney = this.remainMoney - price
+          }
+        }
+      }
+    })
+
+    app.mount("#app")
+  </script>
+</body>
+
+</html>

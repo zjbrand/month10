@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    {{msg}}<br>
+    <button @click="count--">-</button>
+    {{count}}
+    <button @click="count++">+</button>
+
+    <div v-if="flag" v-html="msg"></div>
+    <div v-show="flag" v-html="count"></div>
+
+    <p v-if="gender===1">性別：男性</p>
+    <p v-else-if="gender===0">性別：女性</p>
+    <p v-else>性別：中性</p>
+    <button @click="fn">表示と非表示</button>
+
+  </div>
+
+  <script>
+    const { createApp } = Vue
+    const app = createApp({
+
+      data() {
+        return {
+          msg: "Hello Vue",
+          count: 50,
+          flag: true,
+          gender: 0
+        }
+      },
+
+      methods: {        // 2. methods 必须写在 createApp 的大括号里面（与 data 同级）
+        fn() {
+          this.flag = !this.flag
+        }
+      }
+    })
+
+    app.mount('#app')
+  </script>
+
+</body>
+
+</html>

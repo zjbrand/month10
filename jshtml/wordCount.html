@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+
+<body>
+  <h2>文字カウンター</h2>
+  <textarea style="width:300px;height:100px;" oninput="countText()" id="text"></textarea>
+  <div>
+    文字数：
+    <span id="count">0</span>
+  </div>
+  <script>
+    // let name = "fjskjfkdj"
+    // console.log(name.length)
+    function countText() {
+      //console.log(1)
+      let text = document.querySelector("#text").value
+      //text="fdfdfdsfdsfdssf343244212345363a,.,/.,;kpopk565675757778"
+      let count = text.length
+
+      document.querySelector("#count").textContent = count
+
+    }
+  </script>
+</body>
+
+</html>

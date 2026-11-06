@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <p></p>
+  <hr>
+  <h3></h3>
+
+  <script>
+    let p = document.querySelector("p")
+    let h3 = document.querySelector("h3")
+
+
+    let totalSecond = prompt("計算したい秒数を入力してください：")
+    //78=>1分18秒　%  78%60=18  60%10=0 34%20=14 模 剰余じょうよ => 78/60=parseInt(1.54545)    78%60=18
+    //34245    
+    // console.log(parseInt(78 / 60))
+    // console.log(parseInt(78 % 60))
+    //getTime(3432432)=>換算した結果：${day}天${hour}時${minute}分${second}秒
+    function getTime(time) {
+
+      let second = time % 60
+      let minute = parseInt(time / 60) % 60
+      let hour = parseInt(time / 60 / 60) % 24
+      let day = parseInt(time / 60 / 60 / 24)
+
+      hour = hour < 10 ? '0' + hour : hour
+      minute = minute < 10 ? '0' + minute : minute
+      second = second < 10 ? '0' + second : second
+
+      return `換算した結果：${day}天${hour}時${minute}分${second}秒`
+
+    }
+
+
+    p.textContent = `入力した秒数：${totalSecond}秒`
+
+    h3.innerHTML = getTime(totalSecond)
+
+
+
+  </script>
+</body>
+
+</html>

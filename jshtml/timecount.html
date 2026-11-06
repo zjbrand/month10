@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>秒表</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #f3f6fb;
+      color: #172033;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+    }
+
+    main {
+      width: min(100%, 480px);
+      padding: 32px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 12px 36px #17203318;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 24px;
+      font-size: 24px;
+    }
+
+    #display {
+      margin: 0 0 28px;
+      font-size: clamp(40px, 12vw, 64px);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 2px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    button {
+      min-width: 92px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 8px;
+      background: #e8edf5;
+      color: #172033;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+      filter: brightness(.96);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .5;
+    }
+
+    #start-button {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    #laps {
+      max-height: 240px;
+      margin: 24px 0 0;
+      padding: 0;
+      overflow-y: auto;
+      list-style: none;
+      text-align: left;
+    }
+
+    #laps li {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 4px;
+      border-bottom: 1px solid #e8edf5;
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>秒表</h1>
+    <p id="display" role="timer" aria-live="off">00:00:00.00</p>
+    <div class="controls">
+      <button id="start-button" type="button">开始</button>
+      <button id="lap-button" type="button" disabled>计次</button>
+      <button id="reset-button" type="button" disabled>复位</button>
+    </div>
+    <ol id="laps" aria-label="计次记录"></ol>
+  </main>
+
+  <script>
+    const display = document.querySelector("#display")
+    const startButton = document.querySelector("#start-button")
+    const lapButton = document.querySelector("#lap-button")
+    const resetButton = document.querySelector("#reset-button")
+    const laps = document.querySelector("#laps")
+    let elapsed = 0
+    let startedAt = 0
+    let animationId = null
+    let lapCount = 0
+
+    function formatTime(milliseconds) {
+      const totalCentiseconds = Math.floor(milliseconds / 10)
+      const centiseconds = totalCentiseconds % 100
+      const totalSeconds = Math.floor(totalCentiseconds / 100)
+      const seconds = totalSeconds % 60
+      const minutes = Math.floor(totalSeconds / 60) % 60
+      const hours = Math.floor(totalSeconds / 3600)
+      return [hours, minutes, seconds].map(value => String(value).padStart(2, "0")).join(":")
+        + `.${String(centiseconds).padStart(2, "0")}`
+    }
+
+    function updateDisplay() {
+      display.textContent = formatTime(elapsed + performance.now() - startedAt)
+      animationId = requestAnimationFrame(updateDisplay)
+    }
+
+    function start() {
+      startedAt = performance.now()
+      startButton.textContent = "暂停"
+      lapButton.disabled = false
+      resetButton.disabled = false
+      animationId = requestAnimationFrame(updateDisplay)
+    }
+
+    function pause() {
+      elapsed += performance.now() - startedAt
+      cancelAnimationFrame(animationId)
+      cancelAnimationFrame(animationId)
+      animationId = null
+      display.textContent = formatTime(elapsed)
+      startButton.textContent = "继续"
+      lapButton.disabled = true
+    }
+
+    startButton.addEventListener("click", () => {
+      if (animationId === null) {
+        start()
+      } else {
+        pause()
+      }
+    })
+
+    lapButton.addEventListener("click", () => {
+      lapCount += 1
+      const item = document.createElement("li")
+      const label = document.createElement("span")
+      const time = document.createElement("time")
+      label.textContent = `计次 ${lapCount}`
+      time.textContent = formatTime(elapsed + performance.now() - startedAt)
+      item.append(label, time)
+      laps.prepend(item)
+    })
+
+    resetButton.addEventListener("click", () => {
+      cancelAnimationFrame(animationId)
+      animationId = null
+      elapsed = 0
+      lapCount = 0
+      display.textContent = formatTime(elapsed)
+      startButton.textContent = "开始"
+      lapButton.disabled = true
+      resetButton.disabled = true
+      laps.replaceChildren()
+    })
+  </script>
+</body>
+
+</html>

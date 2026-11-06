@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- <script src="/utility/Jquery.mins.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    div {
+      width: 200px;
+      height: 200px;
+      background-color: skyblue;
+    }
+
+    #rotateBox {
+      height: 150px;
+      background-color: pink;
+      margin: 20px auto;
+      transition: all 0.5s;
+    }
+
+    #rotateBox.current {
+      background-color: red;
+      height: 50px;
+      width: 50px;
+      transform: rotate(360deg);
+      border-radius: 50%;
+    }
+
+    #person {
+      width: 200px;
+      height: 200px;
+      margin: 20px auto;
+      background-image: url("templet/img/bajie.jpg");
+      transition: all 1s;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    #person.change {
+      background-image: url("templet/img/gaoxiaojie.jpg");
+      transform: rotate(360deg);
+    }
+  </style>
+</head>
+
+<body>
+  <div></div><br>
+  <button id="hide">隠す</button>
+  <button id="show">現れる</button>
+  <button id="toggle">変換</button>
+  <br>
+  <hr>
+  <div id="rotateBox"></div>
+  <br>
+  <hr>
+  <p id="message" style="text-align: center;">写真をクリックして変身します</p>
+  <div id="person" style="background-color: white;"></div>
+
+  <script>
+    $('#hide').click(function () {
+      //$('div').hide()
+      //$('div').css("visibility", "hidden")
+      //$('div').fadeOut()
+      // $('div').css({
+      //   'opacity': 0
+      // })
+      $('div').fadeTo(1000, 0)
+    })
+    jQuery('#show').click(function () {
+      //jQuery('div').show()
+      //$('div').css("visibility", "visible")
+      //jQuery('div').fadeIn()
+      // $('div').css({
+      //   'opacity': 1
+      // })
+      $('div').fadeTo(1000, 1)
+    })
+    $('#toggle').click(() => {
+      //$('div').toggle()
+      let currentOpacity = $('div').css('opacity')
+      if (currentOpacity > 0) {
+        $('div').fadeTo(1000, 0)
+      } else {
+        $('div').fadeTo(1000, 1)
+      }
+    })
+
+    $('#rotateBox').click(function () {
+      $(this).toggleClass('current')
+    })
+
+    $('#person').click(function () {
+
+      const person = $(this);
+
+      person.fadeOut(500, function () {
+
+        person.toggleClass('change');
+
+        person.fadeIn(500);
+      });
+
+      $('#message').fadeOut(500, function () {
+
+        if (person.hasClass('change')) {
+          $('#message').text('高さん登場しました')
+        } else {
+          $('#message').text('また八戒になります')
+        }
+        $('#message').fadeIn(500)
+      })
+
+    })
+
+
+  </script>
+</body>
+
+
+</html>

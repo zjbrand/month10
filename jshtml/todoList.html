@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h2>Todo List</h2>
+
+  <input id="taskInput" placeholder="タスクを入力">
+
+  <button id="addBtn">
+    追加
+  </button>
+
+  <ul id="taskList"></ul>
+  <script>
+    const taskInput =
+      document.querySelector("#taskInput");
+
+    const addBtn =
+      document.querySelector("#addBtn");
+
+    const taskList =
+      document.querySelector("#taskList");
+
+    let tasks = [];
+
+    addBtn.addEventListener(
+      "click",
+      function () {
+
+        const text =
+          taskInput.value.trim();
+
+        if (text.length === 0) {
+
+          alert(
+            "タスクを入力してください"
+          );
+
+          return;
+        }
+
+        const task = {
+          id: Date.now(),
+          text: text,
+          completed: false
+        };
+
+        tasks.push(task);
+
+        taskInput.value = "";
+
+        renderTasks();
+      }
+    );
+
+    function renderTasks() {
+
+      taskList.innerHTML = "";
+
+      tasks.forEach(function (task) {
+
+        const li =
+          document.createElement("li");
+
+        li.textContent =
+          task.text;
+
+        if (task.completed) {
+
+          li.style.textDecoration =
+            "line-through";
+
+        }
+
+        const completeBtn =
+          document.createElement("button");
+
+        completeBtn.textContent =
+          "完了";
+
+        completeBtn.addEventListener(
+          "click",
+          function () {
+
+            task.completed =
+              !task.completed;
+
+            renderTasks();
+          }
+        );
+
+        const deleteBtn =
+          document.createElement("button");
+
+        deleteBtn.textContent =
+          "削除";
+
+        deleteBtn.addEventListener(
+          "click",
+          function () {
+
+            tasks =
+              tasks.filter(
+                function (item) {
+
+                  return (
+                    item.id !==
+                    task.id
+                  );
+
+                }
+              );
+
+            renderTasks();
+          }
+        );
+
+        li.appendChild(
+          completeBtn
+        );
+
+        li.appendChild(
+          deleteBtn
+        );
+
+        taskList.appendChild(li);
+
+      });
+
+    }
+  </script>
+</body>
+
+</html>

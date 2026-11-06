@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="/utility/Jquery.mins.js"></script>
+</head>
+
+<body>
+  コーヒー
+  100円
+  <input type="radio" name="drink" id="coffee"><br>
+
+  ジュース
+  120円
+  <input type="radio" name="drink" id="juice"><br>
+
+  牛乳
+  150円
+  <input type="radio" name="drink" id="milk"><br>
+  <hr>
+  投入
+  <input type="number" id="amount"><br>
+  <input type="button" value="購入" id="buy"><br>
+  <!-- <button>購入</button> -->
+  <span id="result"></span>
+
+  <script>
+    $("#buy").click(function () {
+      var coffee = $("#coffee").prop("checked")
+      var juice = $("#juice").prop("checked")
+      var milk = $("#milk").prop("checked")
+
+      // console.log(coffee)
+      // console.log(juice)
+      // console.log(milk)
+      var amount = $("#amount").val()
+      //console.log(amount)
+      if (coffee == false && juice == false && milk == false) {
+        //alert("一つの商品を選んでください")
+        $("#result").html("一つの商品を選んでください")
+        return
+      }
+
+      if (amount == "") {
+        $("#result").html("お金を投入してください")
+        return
+      }
+
+      var needMoney = 0
+      var item = ""
+      if (coffee) {
+        needMoney = 100
+        item = "コーヒー"
+      }
+      if (juice) {
+        needMoney = 120
+        item = "ジュース"
+      }
+      if (milk) {
+        needMoney = 150
+        item = "牛乳"
+      }
+
+      if (needMoney > amount) {
+        $("#result").html("お金が足りません")
+      }
+
+      var remainMoney = amount - needMoney
+
+      $("#result").html("お客様は買ったもの：" + item + "<br>残高:" + remainMoney + "円")
+
+
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="/utility/Jquery.mins.js"></script>
+  <style>
+    .itxt {
+      width: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  コーヒー
+  100円
+  <input type="checkbox" name="drink" id="coffee">
+  <button class="decrement">-</button>
+  <input type="text" class="itxt" value="1">
+  <button class="increment">+</button>
+  <br>
+
+  ジュース
+  120円
+  <input type="checkbox" name="drink" id="juice">
+  <button class="decrement">-</button>
+  <input type="text" class="itxt" value="1">
+  <button class="increment">+</button>
+  <br>
+
+  牛乳
+  150円
+  <input type="checkbox" name="drink" id="milk">
+  <button class="decrement">-</button>
+  <input type="text" class="itxt" value="1">
+  <button class="increment">+</button>
+  <br>
+  <hr>
+  投入
+  <input type="number" id="amount"><br>
+  <input type="button" value="購入" id="buy"><br>
+  <!-- <button>購入</button> -->
+  <span id="result"></span>
+
+  <script>
+    $(function () {
+
+      for (let i = 0; i < 3; i++) {
+        $('input[type="checkbox"]').eq(i).change(function () {
+          if ($(this).prop("checked")) {
+            $(".itxt").eq(i).val(1);
+          } else {
+            $(".itxt").eq(i).val(0);
+          }
+        });
+      }
+
+
+      // $("#coffee").change(function () {
+      //   //$('input[type="checkbox"]').eq(0).change()(function () {
+      //   if ($(this).prop("checked")) {
+      //     $(".itxt").eq(0).val(1);
+      //   } else {
+      //     $(".itxt").eq(0).val(0);
+      //   }
+      // });
+
+      // $("#juice").change(function () {
+      //   if ($(this).prop("checked")) {
+      //     $(".itxt").eq(1).val(1);
+      //   } else {
+      //     $(".itxt").eq(1).val(0);
+      //   }
+      // });
+
+      // $("#milk").change(function () {
+      //   if ($(this).prop("checked")) {
+      //     $(".itxt").eq(2).val(1);
+      //   } else {
+      //     $(".itxt").eq(2).val(0);
+      //   }
+      // });
+
+      $(".increment").click(function () {
+        let n = Number($(this).prev(".itxt").val())
+        n = n + 1
+        $(this).prev(".itxt").val(n)
+      })
+
+      $(".decrement").click(function () {
+        let n = Number($(this).next(".itxt").val())
+        if (n == 0) {
+          return
+        }
+        n = n - 1
+        $(this).next(".itxt").val(n)
+      })
+
+    })
+
+
+
+    $("#buy").click(function () {
+      var coffee = $("#coffee").prop("checked")
+      var juice = $("#juice").prop("checked")
+      var milk = $("#milk").prop("checked")
+
+      // console.log(coffee)
+      // console.log(juice)
+      // console.log(milk)
+      //console.log($(".itxt").eq(0).val())
+
+      var amount = $("#amount").val()
+      //console.log(amount)
+      if (coffee == false && juice == false && milk == false) {
+        //alert("一つの商品を選んでください")
+        $("#result").html("一つの商品を選んでください")
+        return
+      }
+
+      if (amount == "") {
+        $("#result").html("お金を投入してください")
+        return
+      }
+
+      var needMoney = 0
+      var coffeeMoney = 0
+      var juiceMoney = 0
+      var milkMoney = 0
+      var itemCoffee = ""
+      var itemJuice = ""
+      var itemMilk = ""
+
+      if (coffee) {
+        coffeeMoney = 100 * $(".itxt").eq(0).val()
+        itemCoffee = "コーヒー"
+      }
+      if (juice) {
+        juiceMoney = 120 * $(".itxt").eq(1).val()
+        itemJuice = "ジュース"
+      }
+      if (milk) {
+        milkMoney = 150 * $(".itxt").eq(2).val()
+        itemMilk = "牛乳"
+      }
+
+      needMoney = coffeeMoney + juiceMoney + milkMoney
+
+      if (needMoney > amount) {
+        $("#result").html("お金が足りません")
+      }
+
+      var remainMoney = amount - needMoney
+
+      $("#result").html("お客様は買ったもの：" + itemCoffee + " " + itemJuice + " " + itemMilk +
+        "<br>合計金額:" + needMoney +
+        "<br>残高:" + remainMoney + "円")
+
+
+    })
+  </script>
+</body>
+
+</html>

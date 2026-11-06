@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    div {
+      width: 300px;
+      height: 40px;
+      border: 3px dotted skyblue;
+      text-align: center;
+      line-height: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>東京時間</h1>
+  <div></div>
+
+  <script>
+    let div = document.querySelector("div")
+
+    function getJapTime() {
+      const date = new Date()
+      //const aaa = new Date()
+      console.log(date)
+      let year = date.getFullYear()
+      console.log(year)
+      let day = date.getDate()
+      console.log(day)
+      let week = date.getDay()
+      console.log(week)
+      let month = date.getMonth() + 1
+      console.log(month)
+      let hour = date.getHours()
+      let minute = date.getMinutes()
+      let second = date.getSeconds()
+      console.log(hour)
+      console.log(minute)
+      console.log(second)
+
+      let weeklist = ['日', '月', '火', '水', '木', '金', '土',]
+
+      //三元运算
+      month = month < 10 ? '0' + month : month
+      day = day < 10 ? '0' + day : day
+      hour = hour < 10 ? '0' + hour : hour
+      minute = minute < 10 ? '0' + minute : minute
+      second = second < 10 ? '0' + second : second
+
+      return `${year} 年${month}月${day}日 ${weeklist[week]}曜日${hour}時${minute}分${second}秒`
+    }
+
+    //console.log(getJapTime())
+
+    div.innerHTML = getJapTime()
+
+    setInterval(function () {
+      div.innerHTML = getJapTime()
+    }, 1000)
+
+
+
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>取り受けたパラメータ</h1>
+  <p id="searchName">searchName</p>
+  <p id="dateBegin">beginDate</p>
+  <p id="dateEnd">endDate</p>
+  <script>
+    let urlParam = new URLSearchParams(window.location.search);
+    let searchName = urlParam.get("searchName");
+    let dateBegin = urlParam.get("dateBegin");
+    let dateEnd = urlParam.get("dateEnd");
+
+    document.querySelector("#searchName").innerHTML = `<h2 style="color:red;">名前： ${searchName}</h2>`
+    document.querySelector("#dateBegin").innerHTML = `<h2>開始時間： ${dateBegin}</h2>`
+    document.querySelector("#dateEnd").innerHTML = `<h2>完了時間： ${dateEnd}</h2>`
+
+
+  </script>
+</body>
+
+</html>

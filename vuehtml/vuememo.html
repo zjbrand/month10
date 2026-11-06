@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メモ</title>
+  <link rel="stylesheet" href="/templet/css/index.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+  <section id="app">
+
+    <header class="header">
+      <h1>学習記録帳</h1>
+      <input placeholder="タスクを入力してください" class="new-todo" v-model="todoname" @keyup.enter="add"></input>
+      <button class="add" @click="add">タスクを追加</button>
+    </header>
+
+    <main class="main">
+      <ul class="todo-list">
+        <li class="todo" v-for="(item,index) in list" :key="item.id">
+          <div class="view">
+            <span class="index">{{index+1}}</span>
+            <label>{{item.name}}</label>
+            <button class="destroy" @click="del(item.id)"></button>
+          </div>
+        </li>
+      </ul>
+    </main>
+
+    <footer class="footer" v-show="list.length>0">
+      <span class="todo-count">合計：{{list.length}}</span>
+      <button class="clear-completed" @click="clear">タスクをクリアする</button>
+    </footer>
+
+  </section>
+
+  <script>
+    const { createApp } = Vue
+    const app = createApp({
+      data() {
+        return {
+          todoname: '',
+          list: [
+            { id: 1, name: 'cssを学びました。' },
+            { id: 2, name: 'JavaScript学習' },
+            { id: 3, name: 'Vue学習中' }
+          ]
+        }
+      },
+      methods: {
+        add() {
+          if (this.todoname === '') {
+            alert("タスクの内容は空白にできません、タスクの内容を入力してください")
+            return
+          }
+          this.list.unshift({ id: Date.now(), name: this.todoname })
+          this.todoname = ""
+        },
+        del(id) {
+          this.list = this.list.filter(item => item.id !== id)
+        },
+        clear() {
+          this.list = []
+        }
+      }
+    })
+
+    app.mount("#app")
+
+  </script>
+</body>
+
+</html>

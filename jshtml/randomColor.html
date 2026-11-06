@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    div {
+      width: 300px;
+      height: 300px;
+      background-color: aqua;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div></div>
+  <label><input type="radio" name="colorset" value="rgb">rgbで生成する</input></label>
+  <label><input type="radio" name="colorset" value="16hex">16進数で生成する</input></label>
+  <!-- <label><input type="radio" name="colorset1" value="rgb">rgbで生成する</input></label>
+  <label><input type="radio" name="colorset1" value="16hex">16進数で生成する</input></label> -->
+
+
+  <button>カラーを変換する</button>
+
+  <script>
+    let div = document.querySelector("div")
+    let button = document.querySelector("button")
+
+    //let ran = Math.random() * 10
+    //let ran = Math.random() * 256
+
+    // ran1 = Math.ceil(ran)//23.1=>24
+    // ran2 = Math.floor(ran)//23.6=>23
+    // ran3 = Math.round(ran)//23.1=>23  23.6=>24
+    // ran4 = parseInt(ran)
+
+    // console.log(ran)
+    // console.log("ceil:" + ran1)
+    // console.log("floor:" + ran2)
+    // console.log("round:" + ran3)
+    // console.log("parseInt:" + ran4)
+
+    //十進数：123456789=>10 11
+    //八進数：1234567  =>10 11
+    //二進数：01       =>10 11
+    //十六進数：123456789abcdef =>10 11
+    //#a1 a4 ef  rgb230 34 251
+    //十進数は二進数に変換：13=>1101
+    //二進数は十進数に変換：1×2×2×2+1×2×2+0+1=13
+    //十六進数11=>0001 0001
+    //十六進数dd=>1101 1101
+    //2の次方 1 2  3  4  5  6  7  8     255           256
+    //       2  4 8  16 32 64 128 256   1111 1111   1 0000 0000
+
+    function getRGB() {
+      let r = Math.floor(Math.random() * 256)
+      let g = Math.floor(Math.random() * 256)
+      let b = Math.floor(Math.random() * 256)
+      //rgb(89,56,134)
+      return `rgb(${r}, ${g}, ${b})`
+    }
+
+    //console.log(getRGB())
+
+    let arr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+
+    function get16HEX() {
+      //#a1a4ef
+      let hexclr = "#"
+      for (let i = 0; i < 6; i++) {
+        let rdm = Math.floor(Math.random() * 16)
+        hexclr = hexclr + arr[rdm]
+        //hexclr += arr[rdm]
+      }
+      return hexclr
+    }
+    //console.log(get16HEX())
+
+    button.addEventListener("click", function () {
+
+      let selectClr = document.querySelector('input[name="colorset"]:checked').value
+
+      console.log(selectClr)
+      if (selectClr == "rgb") {
+        div.style.backgroundColor = getRGB()
+        console.log(getRGB())
+      } else {
+        div.style.backgroundColor = get16HEX()
+        console.log(get16HEX())
+      }
+
+    })
+
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

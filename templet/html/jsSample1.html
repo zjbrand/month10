@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .large {
+      background-color: red;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="btn">クリックすると拡大します</button>
+  <hr>
+  <button onclick="changeLarge()">拡大クリック</button>
+  <button onclick="restore()">回復クリック</button>
+  <button onclick="change()">回復クリック</button>
+
+
+  <script>
+    //全局变量
+    let btn = document.querySelector(".btn")
+
+    function changeLarge() {
+      // alert(111) let var const
+
+      btn.classList.add("large")
+    }
+
+    function restore() {
+      //局部变量
+      //let btn = document.querySelector(".btn")
+      btn.classList.remove("large")
+    }
+
+    function change() {
+      //let btn = document.querySelector(".btn")
+      btn.classList.toggle("large")
+    }
+
+  </script>
+</body>
+
+</html>

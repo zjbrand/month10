@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .skyblue {
+      background-color: red;
+      padding: 10px 20px;
+    }
+
+    .h1color {
+      color: red;
+      font-size: 30px;
+    }
+
+    .h2color {
+      color: green;
+      font-size: 30px;
+    }
+
+    .h3color {
+      color: blue;
+      font-size: 30px;
+    }
+
+    .h4color {
+      color: pink;
+      font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- JavaScript->jqury TypeScript Vue react Angular -->
+  <!--ctrl+/-->
+  <h1 class="h">今日JAVASCRIPTを学んでいる</h1>
+  <h2 class="h">今日JAVASCRIPTを学んでいる</h2>
+  <h3 class="h">今日JAVASCRIPTを学んでいる</h3>
+  <h4 class="h">今日JAVASCRIPTを学んでいる</h4>
+  <!-- alt+shift+↓ -->
+  <button onclick="changeColor1()">ボタン1</button>
+  <button onclick="changeColor2()">ボタン2</button>
+  <button onclick="changeColor3()">ボタン3</button>
+  <button onclick="changeColor4()">ボタン4</button>
+  <br>
+  <hr>
+
+  <button class="bt">按钮1</button>
+  <button class="bt">按钮2</button>
+  <button class="bt">按钮3</button>
+  <button class="bt">按钮4</button>
+  <br>
+  <br>
+  <hr>
+  <!-- mechod メーソット 関数-->
+  <button onclick="changesharp()">値を取得する</button>
+
+  <script>
+
+    let bt = document.querySelectorAll(".bt")
+
+    let h = document.querySelectorAll(".h")
+    //index bt[0] bt[1] bt[2] bt[3]
+    //list列表リスト
+    function changesharp() {
+      console.log(bt)
+      bt[1].classList.add(".skyblue")
+    }
+
+    function changeColor1() {
+      h[0].classList.toggle("h1color")
+    }
+    function changeColor2() {
+      h[1].classList.toggle("h2color")
+    }
+    function changeColor3() {
+      h[2].classList.toggle("h3color")
+    }
+    function changeColor4() {
+      h[3].classList.toggle("h4color")
+    }
+
+
+
+  </script>
+</body>
+
+</html>

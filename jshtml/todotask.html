@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h2>TodoList</h2>
+
+  <input id="taskInput" placeholder="タスクを入力"></input>
+  <button id="addBtn">追加</button>
+  <span style="color: red;"></span>
+
+  <ul id="taskList"></ul>
+
+
+  <script>
+    const taskInput = document.querySelector("#taskInput")
+    const addBtn = document.querySelector("#addBtn")
+    const taskList = document.querySelector("#taskList")
+    const span = document.querySelector("span")
+
+    let tasks = []
+    addBtn.addEventListener("click", function () {
+      const text = taskInput.value.trim()
+
+      if (text.length == 0) {
+        span.innerHTML = "タスクの内容を入力してください"
+        setTimeout(() => {
+          span.innerHTML = ''
+        }, 3000)
+        return
+      }
+
+      let task = {
+        id: Date.now(),
+        text: text,
+        completed: false
+      }
+
+      tasks.push(task)
+      console.log(tasks)
+      //time stampタイムスタンプ　1970年1月1日00:00時から      
+      //console.log(Date.now())  
+      renderTask()
+
+      taskInput.value = ""
+    })
+
+    //レンダリング
+    function renderTask() {
+
+      taskList.innerHTML = ""
+
+      tasks.forEach(task => {
+
+        const li = document.createElement("li")
+        li.textContent = task.text
+        taskList.appendChild(li)
+
+        if (task.completed) {
+          li.style.textDecoration = "line-through"
+        }
+
+
+        const completeBtn = document.createElement("button")
+        completeBtn.textContent = "完了"
+
+        const deleteBtn = document.createElement("button")
+        deleteBtn.textContent = "削除"
+
+        completeBtn.addEventListener("click", function () {
+          task.completed = !task.completed
+          renderTask()
+        })
+
+        deleteBtn.addEventListener("click", function () {
+          //console.log(11)
+
+          tasks = tasks.filter(item => {
+            return item.id !== task.id
+          })
+          renderTask()
+
+        })
+
+        li.appendChild(completeBtn)
+        li.appendChild(deleteBtn)
+
+      })
+
+    }
+
+  </script>
+</body>
+
+</html>

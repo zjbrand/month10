@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>秒表</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #f3f6fb;
+      color: #172033;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+    }
+
+    main {
+      width: min(100%, 480px);
+      padding: 32px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 12px 36px #17203318;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 24px;
+      font-size: 24px;
+    }
+
+    #display {
+      margin: 0 0 28px;
+      font-size: clamp(40px, 12vw, 64px);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 2px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    button {
+      min-width: 92px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 8px;
+      background: #e8edf5;
+      color: #172033;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+      filter: brightness(.96);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .5;
+    }
+
+    #start-button {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    #laps {
+      max-height: 240px;
+      margin: 24px 0 0;
+      padding: 0;
+      overflow-y: auto;
+      list-style: none;
+      text-align: left;
+    }
+
+    #laps li {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 4px;
+      border-bottom: 1px solid #e8edf5;
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+
+<body>
+  <main id="app">
+    <h1>秒表</h1>
+    <p id="display" role="timer" aria-live="off">{{ formattedElapsed }}</p>
+    <div class="controls">
+      <button id="start-button" type="button" @click="toggle">{{ isRunning ? "暂停" : hasStarted ? "继续" : "开始" }}</button>
+      <button id="lap-button" type="button" :disabled="!isRunning" @click="recordLap">计次</button>
+      <button id="reset-button" type="button" :disabled="!hasStarted" @click="reset">复位</button>
+    </div>
+    <ol id="laps" aria-label="计次记录">
+      <li v-for="lap in laps" :key="lap.id">
+        <span>计次 {{ lap.id }}</span>
+        <time>{{ lap.time }}</time>
+      </li>
+    </ol>
+  </main>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    const { createApp, ref, computed, onBeforeUnmount } = Vue
+
+    createApp({
+      setup() {
+        const elapsed = ref(0)
+        const now = ref(0)
+        const startedAt = ref(0)
+        const isRunning = ref(false)
+        const hasStarted = ref(false)
+        const laps = ref([])
+        let animationId = null
+
+        function formatTime(milliseconds) {
+          const totalCentiseconds = Math.floor(milliseconds / 10)
+          const centiseconds = totalCentiseconds % 100
+          const totalSeconds = Math.floor(totalCentiseconds / 100)
+          const seconds = totalSeconds % 60
+          const minutes = Math.floor(totalSeconds / 60) % 60
+          const hours = Math.floor(totalSeconds / 3600)
+          return [hours, minutes, seconds].map(value => String(value).padStart(2, "0")).join(":")
+            + `.${String(centiseconds).padStart(2, "0")}`
+        }
+
+        const formattedElapsed = computed(() => {
+          const currentElapsed = elapsed.value
+            + (isRunning.value ? now.value - startedAt.value : 0)
+          return formatTime(currentElapsed)
+        })
+
+        function updateDisplay(timestamp) {
+          now.value = timestamp
+          animationId = requestAnimationFrame(updateDisplay)
+        }
+
+        function toggle() {
+          if (isRunning.value) {
+            elapsed.value += performance.now() - startedAt.value
+            isRunning.value = false
+            cancelAnimationFrame(animationId)
+            animationId = null
+            return
+          }
+
+          startedAt.value = performance.now()
+          now.value = startedAt.value
+          isRunning.value = true
+          hasStarted.value = true
+          animationId = requestAnimationFrame(updateDisplay)
+        }
+
+        function recordLap() {
+          if (!isRunning.value) return
+          const currentElapsed = elapsed.value + performance.now() - startedAt.value
+          laps.value.unshift({
+            id: laps.value.length + 1,
+            time: formatTime(currentElapsed)
+          })
+        }
+
+        function reset() {
+          if (animationId !== null) cancelAnimationFrame(animationId)
+          animationId = null
+          elapsed.value = 0
+          now.value = 0
+          startedAt.value = 0
+          isRunning.value = false
+          hasStarted.value = false
+          laps.value = []
+        }
+
+        onBeforeUnmount(() => {
+          if (animationId !== null) cancelAnimationFrame(animationId)
+        })
+
+        return {
+          formattedElapsed,
+          hasStarted,
+          isRunning,
+          laps,
+          recordLap,
+          reset,
+          toggle
+        }
+      }
+    }).mount("#app")
+  </script>
+</body>
+
+</html>

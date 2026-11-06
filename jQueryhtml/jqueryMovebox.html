@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="/utility/Jquery.mins.js"></script>
+  <style>
+    div {
+      position: absolute;
+      width: 200px;
+      height: 150px;
+      background-color: skyblue;
+    }
+  </style>
+</head>
+
+<body>
+  <button>動させる</button>
+  <div></div>
+
+  <script>
+    let isMoved = false
+    $("button").click(function () {
+      if (!isMoved) {
+        $("div").animate({
+          left: 500,
+          top: 300,
+          opacity: 0.4,
+          width: 500,
+          height: 300,
+        }, 500)
+      } else {
+        $("div").animate({
+          left: 6,
+          top: 35,
+          opacity: 1,
+          width: 200,
+          height: 150,
+        }, 500)
+      }
+      isMoved = !isMoved
+
+
+    })
+
+  </script>
+</body>
+
+</html>

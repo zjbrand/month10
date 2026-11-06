@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* 全体基本設定 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "メイリオ", sans-serif;
+    }
+
+    body {
+      background-color: #f0f4f8;
+      padding: 2rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* 見出し */
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      font-size: 1.6rem;
+    }
+
+    /* 説明文 */
+    p {
+      text-align: center;
+      color: #555;
+      margin-bottom: 1.2rem;
+    }
+
+    /* 入力欄共通 */
+    input[type="number"] {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      margin-bottom: 1rem;
+      border: 2px solid #d1dce5;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    /* ボタン共通 */
+    button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      margin: 0.3rem;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    /* 計算ボタン */
+    button:first-of-type {
+      background-color: #3498db;
+      color: #fff;
+    }
+
+    button:first-of-type:hover {
+      background-color: #2980b9;
+    }
+
+    /* リセットボタン */
+    button:last-of-type {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+
+    button:last-of-type:hover {
+      background-color: #c0392b;
+    }
+
+    /* ボタン配置 */
+    br+hr {
+      margin-top: 1rem;
+    }
+
+    /* 結果表示エリア */
+    #result {
+      margin-top: 1.2rem;
+      padding: 1.2rem;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      line-height: 1.8;
+      font-size: 1rem;
+      color: #2c3e50;
+      min-height: 60px;
+    }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+
+      button {
+        width: 100%;
+        margin: 0.4rem 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h2>BMI計算ツール</h2>
+  <p>身長と体重を入力してください</p>
+  <input type="number" id="height" placeholder="身長(CM)"></input>
+  <input type="number" id="weight" placeholder="体重(KG)"></input>
+  <button onclick="calculateBMI()">計算</button>
+  <button onclick="resetBMI()">リセット</button>
+  <br>
+  <hr>
+  <div id="result"></div>
+
+  <script>
+
+    document.getElementById("height").addEventListener("keydown", (e) => {
+      //console.log(e)
+      if (e.key === "Enter") {
+        calculateBMI()
+      }
+    })
+
+    document.getElementById("weight").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        calculateBMI()
+      }
+    })
+
+    function calculateBMI() {
+      let height = document.getElementById("height").value
+      let weight = document.getElementById("weight").value
+      let result = document.getElementById("result")
+
+      if (height <= 0 || weight <= 0) {
+        result.innerHTML = "正しく身長と体重を入力してください。"
+        return
+      }
+
+      //身長をCMからMに変換する
+      height = height / 100
+
+      let bmi = weight / (height * height)
+
+      bmi = bmi.toFixed(1)
+
+      let status = ""
+
+      if (bmi < 18.5) {
+        status = "瘦せ気味"
+      } else if (bmi <= 24.9) {
+        status = "正常"
+      } else if (bmi <= 29.9) {
+        status = "肥満気味"
+      } else {
+        status = "肥満"
+      }
+
+      //result.innerHTML = "あなだのBMI：" + bmi + "<p>判定：" + status + "</p>"
+      result.innerHTML = `あなだのBMI：${bmi}<h4>判定：${status}</h4>`
+    }
+
+    function resetBMI() {
+
+      document.getElementById("height").value = ""
+      document.getElementById("weight").value = ""
+      document.getElementById("result").innerHTML = ""
+
+    }
+
+
+
+  </script>
+</body>
+
+</html>

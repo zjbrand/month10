@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      text-align: center;
+    }
+
+    table {
+      width: 600px;
+      margin: auto;
+      border: 3px solid;
+      border-collapse: collapse;
+    }
+
+    th {
+      background-color: #ddd;
+    }
+
+    tr {
+      height: 40px;
+    }
+
+    tr:not(:first-child):hover {
+      background-color: #eee;
+      height: 50px;
+    }
+
+    th,
+    td {
+      border: 1px solid;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>ユーザー情報リスト</h2>
+  <table>
+    <tr>
+      <th>項番</th>
+      <th>名前</th>
+      <th>年齢</th>
+      <th>性別</th>
+      <th>メール</th>
+      <th>住所</th>
+    </tr>
+    <!-- <tr>
+      <td>1</td>
+      <td>田中一郎</td>
+      <td>男性</td>
+      <td>25</td>
+      <td>tanaka</td>
+      <td>千葉県</td>
+    </tr> -->
+
+    <!--方法一 
+    <script>
+      let users = [
+        {
+          id: 1,
+          name: "田中一郎",
+          gender: "男性",
+          age: 25,
+          email: "tanaka@gmail.com",
+          address: "千葉県"
+        },
+        {
+          id: 2,
+          name: "鈴木花子",
+          gender: "女性",
+          age: 35,
+          email: "suzuki@gmail.com",
+          address: "群馬県"
+        },
+        {
+          id: 3,
+          name: "横山大郎",
+          gender: "男性",
+          age: 77,
+          email: "yokoyama@gmail.com",
+          address: "埼玉県"
+        },
+        {
+          id: 4,
+          name: "松本三郎",
+          gender: "男性",
+          age: 62,
+          email: "matumoto@gmail.com",
+          address: "神奈川県"
+        }
+      ]
+
+      for (let i = 0; i < users.length; i++) {
+        document.write(`
+        <tr>
+          <td>${i + 1}</td>
+          <td>${users[i].name}</td>
+          <td>${users[i].gender}</td>
+          <td>${users[i].age}</td>
+          <td>${users[i].email}</td>
+          <td>${users[i].address}</td>
+          
+        </tr>
+        
+        `)
+      }
+    </script> -->
+  </table>
+
+
+  <script>
+    let users = [
+      {
+        id: 1,
+        name: "田中一郎",
+        gender: "男性",
+        age: 25,
+        email: "tanaka@gmail.com",
+        address: "千葉県"
+      },
+      {
+        id: 2,
+        name: "鈴木花子",
+        gender: "女性",
+        age: 35,
+        email: "suzuki@gmail.com",
+        address: "群馬県"
+      },
+      {
+        id: 3,
+        name: "横山大郎",
+        gender: "男性",
+        age: 77,
+        email: "yokoyama@gmail.com",
+        address: "埼玉県"
+      },
+      {
+        id: 4,
+        name: "松本三郎",
+        gender: "男性",
+        age: 62,
+        email: "matumoto@gmail.com",
+        address: "神奈川県"
+      },
+      {
+        id: 5,
+        name: "山田結衣",
+        gender: "女性",
+        age: 42,
+        email: "yamada@gmail.com",
+        address: "静岡県"
+      },
+      {
+        id: 6,
+        name: "山本二郎",
+        gender: "男性",
+        age: 29,
+        email: "yamada@gmail.com",
+        address: "名古屋市"
+      }
+    ]
+
+    const table = document.querySelector("table")
+
+    users.forEach((user, index) => {
+      const tr = document.createElement("tr")
+      tr.innerHTML = `       
+          <td>${index + 1}</td>
+          <td>${user.name}</td>
+          <td>${user.gender}</td>
+          <td>${user.age}</td>
+          <td>${user.email}</td>
+          <td>${user.address}</td>       
+
+        `
+      table.appendChild(tr)
+    })
+
+
+
+
+    // for (let i = 0; i < users.length; i++) {
+
+    //   const tr = document.createElement("tr")
+
+    //   tr.innerHTML = `
+    //       <td>${i + 1}</td>
+    //       <td>${users[i].name}</td>
+    //       <td>${users[i].gender}</td>
+    //       <td>${users[i].age}</td>
+    //       <td>${users[i].email}</td>
+    //       <td>${users[i].address}</td>
+    //     `
+    //   table.appendChild(tr)
+    // }
+
+
+  </script>
+</body>
+
+</html>

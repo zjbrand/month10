@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スライダー</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .slider {
+      width: 560px;
+      height: 400px;
+      overflow: hidden;
+      display: block;
+      margin: auto;
+    }
+
+    .slider-wrapper {
+      width: 100%;
+      height: 320px;
+    }
+
+    .slider-wrapper img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .slider-footer {
+      height: 80px;
+      background-color: rgb(100, 67, 68);
+      padding: 12px 12px 0 12px;
+      position: relative;
+    }
+
+    .slider-footer .toggle {
+      position: absolute;
+      right: 0px;
+      top: 12px;
+      display: flex;
+    }
+
+    .slider-footer .toggle button {
+      margin-right: 12px;
+      width: 28px;
+      height: 28px;
+      appearance: none;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .slider-footer .toggle button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .slider-footer p {
+      margin: 0;
+      color: #fff;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .slider-indocator {
+      margin: 0px;
+      padding: 0px;
+      list-style: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .slider-indocator li {
+      width: 8px;
+      height: 8px;
+      margin: 4px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.4;
+      cursor: pointer;
+    }
+
+    .slider-indocator li.active {
+      width: 12px;
+      height: 12px;
+      opacity: 1;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="slider">
+    <div class="slider-wrapper">
+      <img src="./templet/img/1.jpg" alt="">
+    </div>
+    <div class="slider-footer" style="background-color: rgb(139, 98, 66);">
+      <p>スライダー</p>
+      <ul class="slider-indocator">
+        <li class="active"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      <div class="toggle">
+        <button class="prev">&lt</button>
+        <button class="next">&gt</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const sliderData = [
+      { url: './templet/img/1.jpg', title: '人類にとっては時期尚早なのでは？', color: 'rgb(100,67,68)' },
+      { url: './templet/img/2.jpg', title: '剣と雪の間の伝説を開く！', color: 'rgb(43,35,26)' },
+      { url: './templet/img/3.jpg', title: '本物のジョーカーが現れた！', color: 'rgb(36,31,33)' },
+      { url: './templet/img/4.jpg', title: '李玉剛：Bステーションを通じて世界に東方の大国文化を', color: 'rgb(139,98,81)' },
+      { url: './templet/img/5.jpg', title: '冬休みの日常をシェアしよう！', color: 'rgb(67,90,92)' },
+      { url: './templet/img/6.jpg', title: 'ビリビリの小年YEAH', color: 'rgb(166,131,143)' },
+      { url: './templet/img/7.jpg', title: '一括解決、パソコン環境のお悩み！！', color: 'rgb(53,29,25)' },
+      { url: './templet/img/8.jpg', title: '子猫とくっつきたいと思わない人はいるのか？', color: 'rgb(99,72,114)' }
+    ]
+
+    //最外のボックスboxを取得する
+    const slider = document.querySelector(".slider")
+
+    const img = document.querySelector("img")
+    const p = document.querySelector("p")
+    const ft = document.querySelector(".slider-footer")
+    const li = document.querySelectorAll("li")
+
+    const prev = document.querySelector(".prev")
+    const next = document.querySelector(".next")
+
+    let i = 0
+    function changePic(i) {
+      img.src = sliderData[i].url
+      p.innerHTML = sliderData[i].title
+      ft.style.backgroundColor = sliderData[i].color
+
+      document.querySelector('.slider-indocator .active').classList.remove('active')
+      li[i].classList.add('active')
+
+    }
+
+    let roll = setInterval(() => {
+
+      if (i >= sliderData.length) {
+        i = 0
+      }
+      changePic(i)
+      i++
+    }, 2000)
+
+    slider.addEventListener("mouseenter", function () {
+      clearInterval(roll)
+    })
+
+    slider.addEventListener("mouseleave", function () {
+      clearInterval(roll)
+      roll = setInterval(() => {
+        // if (i >= sliderData.length) {
+        //   i = 0
+        // }
+        // changePic(i)
+        // i++
+        next.click()
+      }, 2000)
+
+
+    })
+
+    prev.addEventListener("click", function () {
+      i--
+      if (i < 0) {
+        i = sliderData.length - 1
+      }
+      changePic(i)
+    })
+
+    next.addEventListener("click", function () {
+      i++
+      if (i >= sliderData.length) {
+        i = 0
+      }
+      changePic(i)
+    })
+
+
+    // for (let j = 0; j < sliderData.length; j++) {
+    //   li[j].addEventListener("click", function () {
+    //     //console.log(j)
+    //     i = j
+    //     changePic(i)
+    //   })
+    // }
+    li.forEach((item, j) => {
+      item.addEventListener("click", function () {
+        i = j
+        changePic(i)
+      })
+
+    })
+
+
+
+
+  </script>
+</body>
+
+</html>

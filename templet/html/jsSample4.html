@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    //今勉強しているのはJavaScript、変数：定義方法：const,var,let
+    //let a;TypeScript
+    // a = 5;
+    // b = 7;
+    // c = a + b
+    //console.log(c)
+
+    // function add(x, y) {
+    //   z = x + y
+    //   console.log(z)
+    // }
+
+    // add(6, 4)
+
+    // function mul(x, y) {
+    //   z = x * y
+    //   console.log(z)
+    // }
+
+    // mul(13, 13)
+
+    // function addReturn(x, y) {
+    //   z = x + y
+    //   return z
+    // }
+
+    // // result = addReturn(128, 234)
+
+    // // console.log(result)
+
+    // console.log(addReturn(128, 234))
+
+    //関数定義仕様書
+    // function addpara(x, y, z, t, u) {
+    //   result = x + y + z + t
+    //   return result
+    // }
+
+    // console.log(addpara(1, 2, 3, 4))
+
+    //let arr = [1, 2, 3, 4, 5, 6, 7, 8]
+    //index  0  1  2  3   
+
+    // function addlist(arr) {
+
+    //   result = arr[0] + arr[1] + arr[2] + arr[3]
+    //   return result
+    // }
+    // console.log(addlist(arr))
+    // console.log(arr[0])
+    // console.log(arr[1])
+    // console.log(arr[2])
+    // console.log(arr[3])
+    //console.log(arr.forEach())
+
+    //console.log(arr.length)
+
+    let arr = [1, 2, 3, 4, 5, 6, 7, 8]
+    let arr1 = [2, 6, 8, 9, 12, 45, 67]
+
+    function addListLoop(array) {
+      let result = 0
+
+      for (let i = 0; i < array.length; i++) {
+        //i=0  arr[0]=1   result=0+1
+        //i=1  arr[1]=2   result=1+2
+        //i=2  arr[2]=3   result=3+3
+        //i=3  arr[3]=4
+        //.....
+        //i=7  arr[7]=8
+        //i=8  arr[8]=null
+        //result = result + arr[i]
+        result += array[i]
+      }
+      return result
+
+    }
+    res = addListLoop(arr1)
+    console.log(res)
+
+
+
+    function multipleListLoop(array) {
+      let result = 1
+
+      for (let i = 0; i < array.length; i++) {
+
+        result *= array[i]
+      }
+      return result
+    }
+    console.log(multipleListLoop(arr))
+
+
+
+
+
+
+
+
+
+  </script>
+</body>
+
+</html>

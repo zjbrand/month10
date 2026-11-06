@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="/utility/Jquery.mins.js"></script>
+  <style>
+    .itxt {
+      width: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  コーヒー
+  100円
+  <input type="checkbox" id="coffee">
+  <button class="decrement">-</button>
+  <input type="text" class="itxt" value="1">
+  <button class="increment">+</button>
+  <br>
+
+  ジュース
+  120円
+  <input type="checkbox" id="juice">
+  <button class="decrement">-</button>
+  <input type="text" class="itxt" value="1">
+  <button class="increment">+</button>
+  <br>
+
+  牛乳
+  150円
+  <input type="checkbox" id="milk">
+  <button class="decrement">-</button>
+  <input type="text" class="itxt" value="1">
+  <button class="increment">+</button>
+  <br>
+  <hr>
+  投入
+  <input type="number" id="amount"><br>
+  <input type="button" value="購入" id="buy"><br>
+  <!-- <button>購入</button> -->
+  <span id="result"></span>
+
+  <script>
+
+    $(".increment").click(function () {
+      let n = $(this).prev(".itxt").val()
+      n++
+      $(this).prev(".itxt").val(n)
+    })
+
+    $(".decrement").click(function () {
+      let n = $(this).next(".itxt").val()
+      //console.log(n)
+      if (n == 1) {
+        return false
+      }
+      n--
+      $(this).next(".itxt").val(n)
+    })
+
+
+
+    $("#buy").click(function () {
+      var coffee = $("#coffee").prop("checked")
+      var juice = $("#juice").prop("checked")
+      var milk = $("#milk").prop("checked")
+
+      // console.log(coffee)
+      // console.log(juice)
+      // console.log(milk)
+      var amount = $("#amount").val()
+      //console.log(amount)
+      if (coffee == false && juice == false && milk == false) {
+        //alert("一つの商品を選んでください")
+        $("#result").html("一つの商品を選んでください")
+        return
+      }
+
+      if (amount == "") {
+        $("#result").html("お金を投入してください")
+        return
+      }
+
+      var needMoney = 0
+      var coffeeMoney = 0
+      var juiceMoney = 0
+      var milkMoney = 0
+      var itemCoffee = ""
+      var itemJuice = ""
+      var itemMilk = ""
+
+      if (coffee) {
+        coffeeMoney = 100
+        itemCoffee = "コーヒー"
+      }
+      if (juice) {
+        juiceMoney += 120
+        itemJuice = "ジュース"
+      }
+      if (milk) {
+        milkMoney = 150
+        itemMilk = "牛乳"
+      }
+
+      needMoney = coffeeMoney + juiceMoney + milkMoney
+
+      if (needMoney > amount) {
+        $("#result").html("お金が足りません")
+      }
+
+      var remainMoney = amount - needMoney
+
+      $("#result").html("お客様は買ったもの：" + itemCoffee + " " + itemJuice + " " + itemMilk + "<br>残高:" + remainMoney + "円")
+
+
+    })
+  </script>
+</body>
+
+</html>

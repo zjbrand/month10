@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>clockRun</title>
+  <style>
+    .c-clock {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      border: 3px solid #333333;
+      border-radius: 50%;
+    }
+
+    .c-clock_hour {
+      position: absolute;
+      top: calc(50% - 150px);
+      left: calc(50% - 5px);
+      width: 10px;
+      height: 150px;
+      background: #333;
+      transform-origin: bottom;
+    }
+
+    .c-clock_min {
+      position: absolute;
+      top: calc(50% - 180px);
+      left: calc(50%);
+      width: 4px;
+      height: 180px;
+      background: #333;
+      transform-origin: bottom;
+    }
+
+    .c-clock_sec {
+      position: absolute;
+      top: calc(50% - 200px);
+      left: calc(50%);
+      width: 2px;
+      height: 200px;
+      background: #ff0000;
+      transform-origin: bottom;
+    }
+
+    .c-clock_12 {
+      position: absolute;
+      top: 10px;
+      left: calc(50%);
+      transform: translateX(-50%);
+      font-size: 18px;
+    }
+
+    .c-clock_3 {
+      position: absolute;
+      top: calc(50%);
+      right: 10px;
+      transform: translateY(-50%);
+      font-size: 18px;
+    }
+
+    .c-clock_6 {
+      position: absolute;
+      bottom: 10px;
+      left: calc(50%);
+      transform: translateX(-50%);
+      font-size: 18px;
+    }
+
+    .c-clock_9 {
+      position: absolute;
+      top: calc(50%);
+      left: 10px;
+      transform: translateY(-50%);
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>時刻表示</h2>
+  <div id="timedisply"></div>
+  <div class="c-clock">
+    <span class="c-clock_hour"></span>
+    <span class="c-clock_min"></span>
+    <span class="c-clock_sec"></span>
+
+    <span class="c-clock_12">12</span>
+    <span class="c-clock_3">3</span>
+    <span class="c-clock_6">6</span>
+    <span class="c-clock_9">9</span>
+  </div>
+  <script>
+    const hourElement = document.querySelector(".c-clock_hour")
+    const minElement = document.querySelector(".c-clock_min")
+    const secElement = document.querySelector(".c-clock_sec")
+
+    setInterval(function () {
+
+      const now = new Date()
+      const h = now.getHours()
+      const m = now.getMinutes()
+      const s = now.getSeconds()
+
+      console.log(h)
+
+      const degreeH = h * (360 / 12) + m * (360 / 60 / 12)
+      const degreeM = m * (360 / 60)
+      const degreeS = s * (360 / 60)
+
+      hourElement.style.transform = `rotate(${degreeH}deg)`
+      minElement.style.transform = `rotate(${degreeM}deg)`
+      secElement.style.transform = `rotate(${degreeS}deg)`
+
+    }, 1000)
+
+
+  </script>
+</body>
+
+</html>

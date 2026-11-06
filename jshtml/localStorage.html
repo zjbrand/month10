@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input id="nameInput" placeholder="名前を入力"></input>
+  <button id="saveBtn">保存</button>
+  <p id="message"></p>
+
+  <script>
+    const nameInput = document.querySelector("#nameInput");
+
+    const saveBtn = document.querySelector("#saveBtn");
+
+    const message = document.querySelector("#message");
+
+    saveBtn.addEventListener("click", function () {
+      const name = nameInput.value.trim();
+
+      if (name.length === 0) {
+        return;
+      }
+
+      localStorage.setItem(
+        "username",
+        name
+      );
+
+      message.textContent =
+        "名前を保存しました";
+    }
+    );
+    const savedName = localStorage.getItem("username");
+
+    if (savedName !== null) {
+
+      message.textContent =
+        "おかえりなさい、" +
+        savedName +
+        "さん";
+    }
+
+
+  </script>
+</body>
+
+</html>

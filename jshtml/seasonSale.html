@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 700px;
+      height: 300px;
+      border-left: 2px solid skyblue;
+      border-bottom: 2px solid skyblue;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      margin: 50px auto;
+      text-align: center;
+    }
+
+    /* 直下の子セレクター */
+    .box>div {
+      display: flex;
+      width: 50px;
+      background-color: skyblue;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* 子孫セレクター */
+    .box div span {
+      margin-top: -20px;
+    }
+
+    .box div h4 {
+      margin-bottom: -40px;
+      margin-left: -13px;
+      width: 80px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+
+  <script>
+    document.write("<h1>×××××株式会社の売上図</h1>")
+    let arr = []
+    for (let i = 1; i <= 4; i++) {
+      //0,1,2,3 1234
+      let pp = +prompt(`第${i}四半期の値を入力してください`)
+      arr.push(pp)
+    }
+    console.log(arr)
+    //arr[0]  arr[1] arr[2] arr[3]
+    //let s = 300
+    // document.write(`
+    //   <div class="box">
+    //     <div style="height: ${arr[0]}px;">
+    //       <span>${arr[0]}</span>
+    //       <h4>第1四半期</h4>
+    //     </div>
+    //     <div style="height: ${arr[1]}px;">
+    //       <span>${arr[1]}</span>
+    //       <h4>第２四半期</h4>
+    //     </div>
+    //     <div style="height: ${arr[2]}px;">
+    //       <span>${arr[2]}</span>
+    //       <h4>第３四半期</h4>
+    //     </div>
+    //     <div style="height: ${arr[3]}px;">
+    //       <span>${arr[3]}</span>
+    //       <h4>第４四半期</h4>
+    //     </div>
+    //   </div>    
+    // `)
+    document.write(`<div class="box">`)
+
+    for (let a = 0; a < arr.length; a++) {
+
+      document.write(`  
+        <div style="height: ${arr[a]}px;">
+          <span>${arr[a]}</span>
+          <h4>第${a + 1}四半期</h4>
+        </div>
+      `)
+    }
+
+
+
+  </script>
+</body>
+
+</html>
